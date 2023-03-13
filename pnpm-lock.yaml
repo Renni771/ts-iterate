@@ -5,8 +5,10 @@ specifiers:
   tsup: 6.6.3
   typescript: 4.9.5
 
-devDependencies:
+dependencies:
   ts-pedantic: 0.2.0
+
+devDependencies:
   tsup: 6.6.3_typescript@4.9.5
   typescript: 4.9.5
 
@@ -765,7 +767,7 @@ packages:
 
   /ts-pedantic/0.2.0:
     resolution: {integrity: sha512-t6gWm8t/QiQtfvJK/p97p/j6VRY6JEAlDqemkQxkNLJj3b+ITHpgQwucqv2JTDlKr7h9/ITRON5IWBfq3bqhag==}
-    dev: true
+    dev: false
 
   /tsup/6.6.3_typescript@4.9.5:
     resolution: {integrity: sha512-OLx/jFllYlVeZQ7sCHBuRVEQBBa1tFbouoc/gbYakyipjVQdWy/iQOvmExUA/ewap9iQ7tbJf9pW0PgcEFfJcQ==}
