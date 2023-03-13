@@ -61,7 +61,7 @@ class Iter<T> {
   }
 
   collect() {
-    return new Iter([...this.arr]);
+    return [...this.arr];
   }
 
   enumerate() {
