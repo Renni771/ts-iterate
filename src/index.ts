@@ -15,10 +15,16 @@ class Iter<T> {
   }
 
   map(mapper: (input: T) => T) {
+    const arr_copy = this.arr;
     for (let i = 0; i < this.capacity; i++) {
-      this.arr[i] = mapper(this.arr[i]);
+      arr_copy[i] = mapper(arr_copy[i]);
     }
-    return this;
+    return new Iter([...arr_copy]);
+  }
+
+  filter(predicate: (input: T) => boolean) {
+    const filteredArray = this.arr.filter(predicate);
+    return new Iter(filteredArray);
   }
 
   all(predicate: (input: T) => boolean) {
@@ -31,58 +37,41 @@ class Iter<T> {
 
   any(predicate: (input: T) => boolean) {
     let result = false;
-    for (let i = 0; i < this.capacity; i++) {
+    let i = this.capacity;
+    while (!result) {
       result = result || predicate(this.arr[i]);
+      i--;
     }
     return result;
   }
 
+  chain(other: Iter<T>) {
+    return new Iter([...this.arr, ...other.arr]);
+  }
+
   collect() {
-    return [...this.arr];
+    return new Iter([...this.arr]);
   }
 
-  * next() {
-    let i = 0;
-    const val = this.arr[i];
-
-    // if (i < this.capacity ) {
-    // if (val) {
-    yield this.arr[i];
-    i++;
-    // }
+  enumerate() {
+    const enumaration = Array<{ i: number; item: T }>(this.capacity);
+    for (let i = 0; i < this.capacity; i++) {
+      enumaration[i] = {
+        i, item: this.arr[i]
+      }
+    }
+    return enumaration;
   }
 
-  toString() {
-    return this.arr.toString();
+  take(n: number) {
+    if (n > this.capacity) {
+      throw new Error(`Cannot take ${n} items from an iterator of capacity ${this.capacity}.`);
+    }
+
+    return new Iter([...this.arr].slice(0, n));
   }
 }
 
-const iter = new Iter([1, 2, 3, 4, 5, 6, 7, 8])
-
-console.log(iter)
-console.log('4th', iter.nth(4))
-console.log('-1th', iter.nth(-1))
-// iter.map((item) => item * 2)
-// iter.map((_) => 1);
-// console.log(iter)
-// console.log('Next...', iter.next())
-// console.log('Next...', iter.next())
-// console.log('Next...', iter.next())
-console.log('All one?', iter.all((i) => i == 1))
-
-const res = iter
-  .map((i) => i ** 2)
-  .map((i) => i << 2)
-  .collect();
-
-console.log(res);
-console.log(iter);
-iter.map((_) => 1);
-console.log(iter);
-
-
-
-
-
-
-
+function toIter<T>(array: T[]) {
+  return new Iter(array);
+}
